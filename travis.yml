@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t doemsche/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run doemsche/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t doemsche/mutli-client ./client
+  - docker build -t doemsche/mutli-nginx ./nginx
+  - docker build -t doemsche/mutli-server ./server
+  - docker build -t doemsche/mutli-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  - docker push doemsche/mutli-client
+  - docker push doemsche/mutli-nginx
+  - docker push doemsche/mutli-server
+  - docker push doemsche/mutli-worker
