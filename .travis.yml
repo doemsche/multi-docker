@@ -13,9 +13,9 @@ after_success:
   - docker build -t doemsche/mutli-nginx ./nginx
   - docker build -t doemsche/mutli-server ./server
   - docker build -t doemsche/mutli-worker ./worker
-
+  #
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-
+  #
   - docker push doemsche/mutli-client
   - docker push doemsche/mutli-nginx
   - docker push doemsche/mutli-server
